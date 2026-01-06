@@ -10,6 +10,10 @@ import Preview from "./pages/Preview";
 import Community from "./pages/Community";
 import View from "./pages/View";
 import Navbar from "./components/Navbar";
+import { Toaster } from 'sonner'
+import AuthPage from "./pages/auth/AuthPage";
+import Settings from "./pages/settings";
+
 
 const App = () => {
   const [dark, setDark] = useState(false);
@@ -56,6 +60,7 @@ const App = () => {
           transition-colors duration-300
         "
       >
+        <Toaster/>
         {!hideNavbar && <Navbar />}
         <Routes>
           <Route path="/" element={<Home />} />
@@ -66,6 +71,9 @@ const App = () => {
           <Route path="/preview/:projectId/:versionId" element={<Preview />} />
           <Route path="/community" element={<Community />} />
           <Route path="/view/:projectId" element={<View />} />
+          <Route path="/auth/:pathname" element={<AuthPage />} />
+          <Route path="/account/settings" element={<Settings />} />
+
         </Routes>
       </div>
     </>
