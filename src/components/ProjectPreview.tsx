@@ -8,6 +8,7 @@ import React, {
 import type { Project } from "../types";
 import { iframeScript } from "../assets/assets";
 import EditorPanel from "./EditorPanel";
+import LoaderSteps from "./LoaderSteps";
 
 export interface projectPreviewRef {
   getCode: () => string | undefined;
@@ -147,14 +148,15 @@ const ProjectPreview = forwardRef<
           </>
         ) : (
           isGenerating && (
-            <div
-              className="
-                flex items-center justify-center h-full
-                text-sm text-[#64748B] dark:text-slate-400
-              "
-            >
-              Loading preview…
-            </div>
+            <LoaderSteps/>
+            // <div
+            //   className="
+            //     flex items-center justify-center h-full
+            //     text-sm text-[#64748B] dark:text-slate-400
+            //   "
+            // >
+              
+            // </div>
           )
         )}
       </div>
