@@ -1,14 +1,36 @@
 import React, { useState } from "react";
 import { Loader2Icon, Sparkles } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "sonner";
+import api from "@/configs/axios";
+import { set } from "better-auth";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const {data:session} = authClient.useSession();
+  const navigate = useNavigate();
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true);
-    setTimeout(() => setLoading(false), 3000);
+    try {
+      if(!session?.user){
+        return toast.error('Please sign in to generate website');
+      }else if(!input.trim()){
+        return toast.error('Please enter a message');
+      }
+      setLoading(true)
+      const {data} = await api.post('/api/user/project',{initial_prompt:input})
+      setLoading(false)
+      navigate(`/project/${data.projectId}`)
+      
+    } catch (error:any) {
+      setLoading(false)
+      toast.error(error?.response?.data?.message || error.message);
+      console.log(error);
+    }
+    // setTimeout(() => setLoading(false), 3000);
   };
 
   return (

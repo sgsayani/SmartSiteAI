@@ -1,14 +1,30 @@
 import { authClient } from "@/lib/auth-client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {UserButton} from '@daveyplate/better-auth-ui'
+import { UserButton } from "@daveyplate/better-auth-ui";
+import api from "@/configs/axios";
+import { toast } from "sonner";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const [credits, setCredits] = useState(0);
+  const { data: session } = authClient.useSession();
+  const getCredits = async () => {
+    try {
+      const { data } = await api.get("/api/user/credits");
+      setCredits(data.credits);
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || error.message);
+      console.log(error);
+    }
+  };
 
-  const {data:session} = authClient.useSession()
-
+  useEffect(() => {
+    if (session?.user) {
+      getCredits();
+    }
+  }, [session?.user]);
 
   return (
     <>
@@ -69,9 +85,9 @@ const Navbar = () => {
         <div className="flex items-center gap-3">
           {/* PRIMARY CTA */}
           {!session?.user ? (
-             <button
-            onClick={() => navigate("/auth/signin")}
-            className="
+            <button
+              onClick={() => navigate("/auth/signin")}
+              className="
               relative px-6 py-2 rounded-md font-medium
               text-white
               bg-gradient-to-r 
@@ -81,14 +97,22 @@ const Navbar = () => {
               focus:outline-none focus:ring-2 focus:ring-[#06B6D4]/50
               dark:shadow-[0_0_18px_rgba(34,211,238,0.25)]  bg-blue-700 dark:bg-blue-600
             "
-          >
-            Get started
-          </button>
-
+            >
+              Get started
+            </button>
           ) : (
-            <UserButton size='icon'/>
-          )
-           }
+            <>
+              <button
+                className="bg-white/10 px-5 py-1.5 
+            text-xs sm:text-sm border
+             text-gray-200 rounded-full"
+              >
+                Credits:
+                <span className="text-indigo-300">{credits}</span>
+              </button>
+              <UserButton size="icon" />
+            </>
+          )}
 
           {/* Mobile menu button */}
           <button
