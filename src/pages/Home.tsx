@@ -3,7 +3,7 @@ import { Loader2Icon, Sparkles } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 import api from "@/configs/axios";
-import { set } from "better-auth";
+// import { set } from "better-auth";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
@@ -21,9 +21,9 @@ const Home = () => {
         return toast.error('Please enter a message');
       }
       setLoading(true)
-      const {data} = await api.post('/api/user/project',{initial_prompt:input})
+      const {data} = await api.post('/api/user/projects', { initial_prompt: input })
       setLoading(false)
-      navigate(`/project/${data.projectId}`)
+      navigate(`/projects/${data.projectId}`)
       
     } catch (error:any) {
       setLoading(false)

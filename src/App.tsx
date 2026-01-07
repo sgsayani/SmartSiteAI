@@ -12,7 +12,8 @@ import View from "./pages/View";
 import Navbar from "./components/Navbar";
 import { Toaster } from 'sonner'
 import AuthPage from "./pages/auth/AuthPage";
-import Settings from "./pages/settings";
+import Settings from "./pages/Settings";
+// import Settings from "./pages/settings";
 
 
 const App = () => {
