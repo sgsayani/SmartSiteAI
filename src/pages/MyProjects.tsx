@@ -10,14 +10,24 @@ const MyProjects = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    setProjects(dummyProjects);
-    setTimeout(() => setLoading(false), 1000);
-  }, []);
+  const fetchProjects = async() =>{
+    try {
+      
+    } catch (error) {
+      
+    }
+  }
+
+  
 
   const deleteProject = async (projectId: string) => {
     console.log("Delete project:", projectId);
   };
+
+  useEffect(() => {
+    setProjects(dummyProjects);
+    setTimeout(() => setLoading(false), 1000);
+  }, []);
 
   return (
     <>
