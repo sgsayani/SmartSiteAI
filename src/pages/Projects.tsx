@@ -76,7 +76,7 @@ const Projects = () => {
     if(!code) return;
     setIsSaving(true)
     try {
-      const {data} = await api.put(`/api/project/save${projectId}`,{code});
+      const {data} = await api.put(`/api/project/save/:${projectId}`,{code});
       toast.success(data.message)
     } catch (error:any) {
       toast.error(error?.response?.data?.message || error.message);
