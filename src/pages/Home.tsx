@@ -1,13 +1,44 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Loader2Icon, Sparkles } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 import api from "@/configs/axios";
-// import { set } from "better-auth";
 import { useNavigate } from "react-router-dom";
 
+/* ===== TYPEWRITER COMPONENT ===== */
+const TypewriterText = ({ text }: { text: string }) => {
+  const [displayed, setDisplayed] = useState("");
+  const [showCursor, setShowCursor] = useState(true);
+
+  useEffect(() => {
+    let i = 0;
+    const interval = setInterval(() => {
+      setDisplayed(text.slice(0, i + 1));
+      i++;
+      if (i === text.length) clearInterval(interval);
+    }, 25);
+
+    const cursorInterval = setInterval(() => {
+      setShowCursor((prev) => !prev);
+    }, 500);
+
+    return () => {
+      clearInterval(interval);
+      clearInterval(cursorInterval);
+    };
+  }, [text]);
+
+  return (
+    <span>
+      {displayed}
+      <span className="cyber-cursor">{showCursor ? "|" : " "}</span>
+    </span>
+  );
+};
+
+
 const Home = () => {
-  const {data:session} = authClient.useSession();
+  const { data: session } = authClient.useSession();
   const navigate = useNavigate();
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -15,77 +46,88 @@ const Home = () => {
   const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      if(!session?.user){
-        return toast.error('Please sign in to generate website');
-      }else if(!input.trim()){
-        return toast.error('Please enter a message');
+      if (!session?.user) {
+        return toast.error("Please sign in to generate website");
+      } else if (!input.trim()) {
+        return toast.error("Please enter a message");
       }
-      setLoading(true)
-      const {data} = await api.post('/api/user/projects', { initial_prompt: input })
-      setLoading(false)
-      navigate(`/projects/${data.projectId}`)
-      
-    } catch (error:any) {
-      setLoading(false)
+      setLoading(true);
+      const { data } = await api.post("/api/user/projects", {
+        initial_prompt: input,
+      });
+      setLoading(false);
+      navigate(`/projects/${data.projectId}`);
+    } catch (error: any) {
+      setLoading(false);
       toast.error(error?.response?.data?.message || error.message);
       console.log(error);
     }
-    // setTimeout(() => setLoading(false), 3000);
   };
+
+  const features = [
+    {
+      title: "AI Layout Engine",
+      desc: "Automatically constructs intelligent layouts by analyzing content structure, user intent, and interaction flow in real-time.",
+    },
+    {
+      title: "Neural Design System",
+      desc: "Adapts spacing, colors, typography, and UI components dynamically using neural-based visual optimization.",
+    },
+    {
+      title: "Instant Deployment",
+      desc: "Transforms your idea into a production-ready, live website within seconds with zero configuration.",
+    },
+  ];
 
   return (
     <section
       className="
-        relative min-h-screen px-4 pb-32 overflow-hidden
+        relative min-h-screen px-4 pb-32 overflow-visible
         bg-gradient-to-b from-slate-50 to-slate-100
         dark:from-[#0B0F1A] dark:to-[#070A13]
         text-slate-900 dark:text-slate-100
         flex flex-col items-center
+        cyber-root
       "
     >
-      {/* AI Blue background glow */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="ai-blue-glow top-24 left-1/2 -translate-x-1/2" />
-        <div className="ai-blue-glow-soft bottom-24 right-24" />
+      {/* ===== HERO ===== */}
+      <div className="relative mt-30 group">
+        <div className="flex items-center gap-2 border border-slate-300 dark:border-slate-700 rounded-full p-1 pr-3 text-sm cyber-badge">
+          <span className="bg-blue-700 dark:bg-blue-600 text-white text-xs px-3 py-1 rounded-full cyber-shine">
+            AI
+          </span>
+          Website generation platform
+        </div>
+
+        <div className="cyber-tooltip">
+          <strong>NEURAL SYSTEM ONLINE</strong>
+          <br />
+          AI is ready to generate your website.
+        </div>
       </div>
 
-      {/* Badge */}
-      <div className="relative mt-20 flex items-center gap-2 border border-slate-300 dark:border-slate-700 rounded-full p-1 pr-3 text-sm animate-fade-in">
-        <span
-          className="
-  bg-blue-700 dark:bg-blue-600
-  text-white text-xs px-3 py-1 rounded-full
-"
-        >
-          AI
-        </span>
-        Website generation platform
-      </div>
-
-      {/* Heading */}
-      <h1 className="relative mt-8 text-center text-[42px] md:text-6xl font-bold max-w-4xl leading-tight animate-slide-up">
+      <h1 className="relative mt-8 text-center text-[42px] md:text-6xl font-bold max-w-4xl leading-tight">
         AI that builds{" "}
-        <span className="bg-clip-text text-transparent bg-gradient-to-r bg-blue-700 dark:bg-blue-600 animate-gradient">
+        <span className="cyber-shine bg-clip-text text-transparent">
           modern websites
         </span>{" "}
         instantly
       </h1>
 
-      <p className="relative mt-4 text-center max-w-xl text-slate-600 dark:text-slate-400 animate-fade-in delay-150">
-        Turn a simple prompt into a production-ready website — layout, UI, and
-        structure generated by AI.
-      </p>
+     <p className="relative mt-4 text-center max-w-xl text-slate-600 dark:text-slate-400 cyber-type">
+  <TypewriterText text="Turn a simple prompt into a production-ready website — layout, UI, and structure generated by AI." />
+</p>
 
-      {/* Form */}
+      {/* ===== FORM ===== */}
       <form
         onSubmit={onSubmitHandler}
         className="
-          relative mt-12 max-w-2xl w-full rounded-2xl p-5
+          relative mt-12 max-w-2xl w-full rounded-xl p-5
           bg-white/80 dark:bg-white/5
           border border-slate-300 dark:border-slate-700
           backdrop-blur-xl
           flex flex-col gap-4
-          animate-scale-in
+          cyber-panel
         "
       >
         <textarea
@@ -97,72 +139,80 @@ const Home = () => {
             bg-transparent resize-none outline-none
             text-slate-800 dark:text-slate-200
             placeholder:text-slate-400
+            rounded-lg
           "
           required
         />
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="
-  ml-auto flex items-center gap-2
-  bg-gradient-to-r 
-  from-blue-700 to-blue-600
-  dark:from-blue-600 dark:to-blue-500
-  hover:from-blue-600 hover:to-blue-500
-  dark:hover:from-blue-500 dark:hover:to-blue-400
-  text-white rounded-md px-5 py-2.5
-  transition-all duration-300
-  shadow-lg hover:shadow-blue-500/30
-"
-        >
-          {!loading ? (
-            <>
-              <Sparkles className="size-4 animate-pulse" />
-              Generate Website
-            </>
-          ) : (
-            <>
-              Generating
-              <Loader2Icon className="animate-spin size-4" />
-            </>
-          )}
-        </button>
+        <div className="relative ml-auto group">
+          <button
+            type="submit"
+            disabled={loading}
+            className="
+              ml-auto flex items-center gap-2
+              bg-gradient-to-r 
+              from-blue-700 to-blue-600
+              dark:from-blue-600 dark:to-blue-500
+              hover:from-blue-600 hover:to-blue-500
+              dark:hover:from-blue-500 dark:hover:to-blue-400
+              text-white rounded-lg px-5 py-2.5
+              transition-all duration-300
+              shadow-lg hover:shadow-blue-500/30
+              cyber-btn
+            "
+          >
+            {!loading ? (
+              <>
+                <Sparkles className="size-4 animate-pulse" />
+                Generate Website
+              </>
+            ) : (
+              <>
+                Generating
+                <Loader2Icon className="animate-spin size-4" />
+              </>
+            )}
+          </button>
+
+          <div className="cyber-tooltip">
+            <strong>EXECUTING AI</strong>
+            <br />
+            Generating your website...
+          </div>
+        </div>
       </form>
 
-      {/* Logos */}
-      <div className="relative mt-20 w-full max-w-5xl overflow-hidden mx-auto">
-        <div className="flex w-max marquee-ai items-center gap-10">
-          {[
-            { name: "Framer", logo: "framer" },
-            { name: "Huawei", logo: "huawei" },
-            { name: "Instagram", logo: "instagram" },
-            { name: "Microsoft", logo: "microsoft" },
-            { name: "Walmart", logo: "walmart" },
-          ]
-            .concat([
-              { name: "Framer", logo: "framer" },
-              { name: "Huawei", logo: "huawei" },
-              { name: "Instagram", logo: "instagram" },
-              { name: "Microsoft", logo: "microsoft" },
-              { name: "Walmart", logo: "walmart" },
-            ])
-            .map((brand, index) => (
-              <div
-                key={index}
-                className="flex items-center gap-3 opacity-70 hover:opacity-100 transition"
-              >
-                <img
-                  src={`/logos/${brand.logo}.svg`}
-                  alt={brand.name}
-                  className="h-8 md:h-9 filter dark:invert dark:brightness-90"
-                />
-                <span className="text-base md:text-lg font-semibold text-slate-600 dark:text-slate-300">
-                  {brand.name}
-                </span>
-              </div>
-            ))}
-        </div>
+      {/* ===== DIVIDER ===== */}
+      <div className="cyber-divider mt-24" />
+
+      {/* ===== FEATURES ===== */}
+      <div className="mt-24 max-w-6xl w-full grid grid-cols-1 md:grid-cols-3 gap-6 px-4 cyber-card-zone">
+        {features.map((item, i) => (
+          <div key={i} className="cyber-card p-6 rounded-xl cyber-float">
+            <h3 className="text-lg font-semibold mb-2 cyber-glow-text">
+              {item.title}
+            </h3>
+            <p className="text-sm opacity-80 cyber-type">
+              <TypewriterText text={item.desc} />
+            </p>
+          </div>
+        ))}
+      </div>
+
+      {/* ===== STATS ===== */}
+      <div className="mt-24 flex flex-wrap justify-center gap-10">
+        {[
+          ["10k+", "Websites Generated"],
+          ["99.9%", "Uptime"],
+          ["1.2s", "Avg Generation"],
+        ].map((stat, i) => (
+          <div key={i} className="text-center cyber-stat">
+            <div className="text-3xl font-bold cyber-glow-text">
+              {stat[0]}
+            </div>
+            <div className="text-sm opacity-50">{stat[1]}</div>
+          </div>
+        ))}
       </div>
     </section>
   );

@@ -1,22 +1,24 @@
 import { authClient } from "@/lib/auth-client";
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { UserButton } from "@daveyplate/better-auth-ui";
 import api from "@/configs/axios";
 import { toast } from "sonner";
+import { Home, Folder, Users, CreditCard, Menu } from "lucide-react";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const [credits, setCredits] = useState(0);
   const { data: session } = authClient.useSession();
+
   const getCredits = async () => {
     try {
       const { data } = await api.get("/api/user/credits");
       setCredits(data.credits);
     } catch (error: any) {
       toast.error(error?.response?.data?.message || error.message);
-      console.log(error);
     }
   };
 
@@ -26,134 +28,136 @@ const Navbar = () => {
     }
   }, [session?.user]);
 
+  const NavIcon = ({
+    to,
+    label,
+    Icon,
+  }: {
+    to: string;
+    label: string;
+    Icon: any;
+  }) => {
+    const active = location.pathname === to;
+
+    return (
+      <Link
+        to={to}
+        className="relative group flex flex-col items-center overflow-visible"
+      >
+        <div
+          className={`
+            p-2 rounded-full transition-all duration-300
+            ${
+              active
+                ? "bg-indigo-500/10 dark:bg-cyan-500/20"
+                : "hover:bg-slate-200/60 dark:hover:bg-white/10"
+            }
+          `}
+        >
+          <Icon
+            size={20}
+            className={`
+              transition-all duration-300
+              ${
+                active
+                  ? "text-indigo-600 dark:text-cyan-400 drop-shadow-[0_0_8px_rgba(79,70,229,0.6)] dark:drop-shadow-[0_0_10px_rgba(34,211,238,0.9)]"
+                  : "text-slate-600 dark:text-slate-400 group-hover:text-indigo-500 dark:group-hover:text-cyan-400"
+              }
+            `}
+          />
+        </div>
+
+        {/* Tooltip */}
+        <div
+          className="
+            absolute -bottom-12 left-1/2 -translate-x-1/2
+            px-3 py-1.5 text-xs rounded-md
+            bg-white text-indigo-600
+            dark:bg-black dark:text-cyan-300
+            opacity-0 scale-90
+            group-hover:opacity-100 group-hover:scale-100
+            transition-all duration-300
+            pointer-events-none
+            whitespace-nowrap
+            z-[9999]
+            shadow-[0_0_15px_rgba(79,70,229,0.3)]
+            dark:shadow-[0_0_20px_rgba(34,211,238,1)]
+            border border-indigo-200 dark:border-cyan-400/40
+            backdrop-blur
+          "
+        >
+          {label}
+        </div>
+      </Link>
+    );
+  };
+
   return (
     <>
-      {/* NAVBAR */}
       <nav
-        className="
+        className=" cyber-glass
+          overflow-visible
+          relative
           z-50 flex items-center justify-between w-full
-          py-4 px-4 md:px-16 lg:px-24 xl:px-32
+          py-3 px-4 md:px-16 lg:px-24 xl:px-32
           backdrop-blur border-b
-          bg-[#FFFFFF]/80 dark:bg-[#0B0F1A]/60
-          border-[#E2E8F0] dark:border-white/10
+          bg-white/80 dark:bg-[#0B0F1A]/60
+          border-slate-200 dark:border-white/10
           text-[#0F172A] dark:text-slate-100
         "
       >
         {/* LOGO */}
-        <Link to="/" className="flex items-center gap-1 select-none">
-          <span className="text-xl font-bold tracking-tight">SmartSite</span>
-          <span
-            className="
-              text-xl font-bold
-              text-[#4F46E5] dark:text-[#22D3EE]
-              drop-shadow-[0_0_6px_rgba(168,85,247,0.35)]
-            "
-          >
-            AI
+        <Link to="/" className="cyber-logo glitch">
+          <span data-text="SmartSite" className="glitch-text">
+            SmartSite
           </span>
+          <span className="cyber-logo-ai">AI</span>
         </Link>
 
-        {/* Desktop Menu */}
-        <div className="hidden md:flex items-center gap-8 text-sm font-medium text-[#64748B] dark:text-slate-300">
-          <Link
-            className="hover:text-[#4F46E5] dark:hover:text-[#22D3EE] transition"
-            to="/"
-          >
-            Home
-          </Link>
-          <Link
-            className="hover:text-[#4F46E5] dark:hover:text-[#22D3EE] transition"
-            to="/projects"
-          >
-            My Projects
-          </Link>
-          <Link
-            className="hover:text-[#4F46E5] dark:hover:text-[#22D3EE] transition"
-            to="/community"
-          >
-            Community
-          </Link>
-          <Link
-            className="hover:text-[#4F46E5] dark:hover:text-[#22D3EE] transition"
-            to="/pricing"
-          >
-            Pricing
-          </Link>
+        {/* ICON MENU */}
+        <div className="hidden md:flex items-center gap-6 overflow-visible">
+          <NavIcon to="/" label="Home" Icon={Home} />
+          <NavIcon to="/projects" label="My Projects" Icon={Folder} />
+          <NavIcon to="/community" label="Community" Icon={Users} />
+          <NavIcon to="/pricing" label="Pricing" Icon={CreditCard} />
         </div>
 
-        {/* Right Actions */}
+        {/* RIGHT */}
         <div className="flex items-center gap-3">
-          {/* PRIMARY CTA */}
           {!session?.user ? (
             <button
               onClick={() => navigate("/auth/signin")}
               className="
-              relative px-6 py-2 rounded-md font-medium
-              text-white
-              bg-gradient-to-r 
-              hover:from-[#4338CA] hover:to-[#4F46E5]
-              active:scale-[0.97]
-              transition-all duration-200
-              focus:outline-none focus:ring-2 focus:ring-[#06B6D4]/50
-              dark:shadow-[0_0_18px_rgba(34,211,238,0.25)]  bg-blue-700 dark:bg-blue-600
-            "
+                px-6 py-2 rounded-md font-medium text-white
+                bg-gradient-to-r from-indigo-600 to-blue-600
+                hover:from-indigo-500 hover:to-blue-500
+                shadow-[0_0_12px_rgba(79,70,229,0.4)]
+                transition-all
+              "
             >
               Get started
             </button>
           ) : (
             <>
-              <button
-                className="bg-white/10 px-5 py-1.5 
-            text-xs sm:text-sm border
-             text-gray-200 rounded-full"
-              >
-                Credits:
-                <span className="text-indigo-300">{credits}</span>
+              <button className="bg-indigo-50 dark:bg-white/10 px-4 py-1.5 text-xs border border-indigo-200 dark:border-white/10 rounded-full text-indigo-600 dark:text-cyan-400">
+                Credits: <span className="ml-1">{credits}</span>
               </button>
               <UserButton size="icon" />
             </>
           )}
 
-          {/* Mobile menu button */}
           <button
-            className="
-              md:hidden p-2 rounded-md
-              border border-[#E2E8F0] dark:border-white/15
-              hover:bg-[#F1F5F9] dark:hover:bg-white/5
-              active:scale-90 transition
-            "
+            className="md:hidden p-2 rounded-md border border-slate-200 dark:border-white/20"
             onClick={() => setMenuOpen(true)}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M4 5h16" />
-              <path d="M4 12h16" />
-              <path d="M4 19h16" />
-            </svg>
+            <Menu />
           </button>
         </div>
       </nav>
 
-      {/* MOBILE MENU */}
+      {/* MOBILE */}
       {menuOpen && (
-        <div
-          className="
-            fixed inset-0 z-[100]
-            bg-[#F8FAFC] dark:bg-[#0B0F1A]
-            text-[#0F172A] dark:text-slate-100
-            flex flex-col items-center justify-center
-            gap-8 text-lg
-          "
-        >
+        <div className="fixed inset-0 z-[100] bg-white dark:bg-black flex flex-col items-center justify-center gap-8 text-indigo-600 dark:text-cyan-400">
           <Link onClick={() => setMenuOpen(false)} to="/">
             Home
           </Link>
@@ -167,15 +171,9 @@ const Navbar = () => {
             Pricing
           </Link>
 
-          {/* CLOSE BUTTON */}
           <button
             onClick={() => setMenuOpen(false)}
-            className="
-              mt-6 size-10 rounded-md font-medium
-              bg-[#0F172A] text-white
-              dark:bg-white dark:text-black
-              hover:scale-105 transition
-            "
+            className="mt-6 size-10 rounded-md bg-indigo-600 text-white dark:bg-white dark:text-black"
           >
             ✕
           </button>

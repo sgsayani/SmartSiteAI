@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
-import { Sun, Moon } from "lucide-react";
-
+// import CyberThemeToggle from "./components/CyberThemeToggle";
 import Home from "./pages/Home";
 import Pricing from "./pages/Pricing";
 import Projects from "./pages/Projects";
@@ -10,11 +9,9 @@ import Preview from "./pages/Preview";
 import Community from "./pages/Community";
 import View from "./pages/View";
 import Navbar from "./components/Navbar";
-import { Toaster } from 'sonner'
+import { Toaster } from "sonner";
 import AuthPage from "./pages/auth/AuthPage";
 import Settings from "./pages/Settings";
-// import Settings from "./pages/settings";
-
 
 const App = () => {
   const [dark, setDark] = useState(false);
@@ -32,37 +29,83 @@ const App = () => {
     localStorage.setItem("theme", dark ? "dark" : "light");
   }, [dark]);
 
-  const {pathname} = useLocation()
-  const hideNavbar = pathname.startsWith('/projects/') && pathname !== '/projects' || pathname.startsWith('/view/') || pathname.startsWith('/preview/')
+  const { pathname } = useLocation();
+  const hideNavbar =
+    (pathname.startsWith("/projects/") && pathname !== "/projects") ||
+    pathname.startsWith("/view/") ||
+    pathname.startsWith("/preview/");
 
   return (
     <>
-      {/* Theme Toggle */}
-      <button
-        onClick={() => setDark(!dark)}
-        className="
-    fixed bottom-6 right-6 z-50
-    p-2 rounded-full
-    bg-[#FFFFFF] dark:bg-white/10
-    border border-[#E2E8F0] dark:border-white/15
-    text-[#0F172A] dark:text-slate-200
-    hover:shadow-md dark:hover:shadow-[0_0_12px_rgba(168,85,247,0.3)]
-    transition-all
-  "
-      >
-        {dark ? <Moon size={18} /> : <Sun size={18} />}
-      </button>
+      {/* <CyberThemeToggle /> */}
+      {/* Holographic Theme Toggle */}
+      <div className="toggle-container fixed bottom-6 right-6 z-[9999]">
+        <div className="toggle-wrap">
+          <input
+            className="toggle-input"
+            id="holo-toggle"
+            type="checkbox"
+            checked={dark}
+            onChange={() => setDark(!dark)}
+          />
+          <label className="toggle-track" htmlFor="holo-toggle">
+            <div className="track-lines">
+              <div className="track-line"></div>
+            </div>
+
+            <div className="toggle-thumb">
+              <div className="thumb-core"></div>
+              <div className="thumb-inner"></div>
+              <div className="thumb-scan"></div>
+              <div className="thumb-particles">
+                <div className="thumb-particle"></div>
+                <div className="thumb-particle"></div>
+                <div className="thumb-particle"></div>
+                <div className="thumb-particle"></div>
+                <div className="thumb-particle"></div>
+              </div>
+            </div>
+
+            <div className="toggle-data">
+              <div className="data-text off">OFF</div>
+              <div className="data-text on">ON</div>
+              <div className="status-indicator off"></div>
+              <div className="status-indicator on"></div>
+            </div>
+
+            <div className="energy-rings">
+              <div className="energy-ring"></div>
+              <div className="energy-ring"></div>
+              <div className="energy-ring"></div>
+            </div>
+
+            <div className="interface-lines">
+              <div className="interface-line"></div>
+              <div className="interface-line"></div>
+              <div className="interface-line"></div>
+              <div className="interface-line"></div>
+              <div className="interface-line"></div>
+              <div className="interface-line"></div>
+            </div>
+
+            <div className="toggle-reflection"></div>
+            <div className="holo-glow"></div>
+          </label>
+        </div>
+      </div>
 
       <div
         className="
           min-h-screen
+          overflow-visible
           bg-[#F8FAFC] dark:bg-[#0B0F1A]
           text-[#0F172A] dark:text-slate-100
           transition-colors duration-300
         "
       >
-        <Toaster/>
+        <Toaster />
         {!hideNavbar && <Navbar />}
+
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/pricing" element={<Pricing />} />
@@ -74,7 +117,6 @@ const App = () => {
           <Route path="/view/:projectId" element={<View />} />
           <Route path="/auth/:pathname" element={<AuthPage />} />
           <Route path="/account/settings" element={<Settings />} />
-
         </Routes>
       </div>
     </>
