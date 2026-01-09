@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { dummyProjects } from "../assets/assets";
+// import { dummyProjects } from "../assets/assets";
 import { Loader2Icon } from "lucide-react";
 import ProjectPreview from "../components/ProjectPreview";
 import type { Project } from "../types";
 import { toast } from "sonner";
 import api from "@/configs/axios";
-import { set } from "better-auth";
 
 const View = () => {
   const { projectId } = useParams();
