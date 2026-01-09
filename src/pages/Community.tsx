@@ -14,7 +14,7 @@ const Community = () => {
 
   const fetchProjects = async () => {
     try {
-      const {data} = await api.get('/api/project/published');
+      const {data} = await api.get('/api/projects/published');
       setProjects(data.projects);
       setLoading(false);
       

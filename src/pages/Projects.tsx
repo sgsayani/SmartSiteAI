@@ -91,7 +91,7 @@ const Projects = () => {
 
   const togglePublish = async () => {
      try {
-      const {data} = await api.get(`/api/user/publish-toggle${projectId}`);
+      const {data} = await api.get(`/api/user/publish-toggle/:${projectId}`);
       toast.success(data.message)
       setProject((prev)=>prev ? ({...prev,isPublished: !prev.isPublished}) : null)
     } catch (error:any) {

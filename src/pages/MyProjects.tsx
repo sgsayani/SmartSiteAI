@@ -30,7 +30,7 @@ const MyProjects = () => {
     try {
       const confirm = window.confirm('Are you sure you want to delete this project?');
       if(!confirm) return;
-      const { data } = await api.delete(`/api/user/projects/${projectId}`);
+      const { data } = await api.delete(`/api/user/projects/:${projectId}`);
       toast.success(data.message);
       fetchProjects();
       
