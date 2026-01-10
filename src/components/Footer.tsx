@@ -16,7 +16,7 @@ const Footer = () => {
           
           {/* LinkedIn */}
           <li>
-            <a href="www.linkedin.com/in/sayani-ghatak" target="_blank" aria-label="LinkedIn">
+            <a href="https://www.linkedin.com/in/sayani-ghatak/" target="_blank" aria-label="LinkedIn">
               <svg viewBox="0 0 24 24">
                 <path d="M4.98 3.5C4.98 4.88 3.9 6 2.5 6S0 4.88 0 3.5 1.1 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8.5h4v15h-4v-15zM8.5 8.5h3.8v2h.1c.53-.95 1.84-1.95 3.78-1.95 4.04 0 4.79 2.66 4.79 6.12v8.83h-4v-7.83c0-1.87-.04-4.28-2.61-4.28-2.62 0-3.02 2.04-3.02 4.14v7.97h-4v-15z"/>
               </svg>
