@@ -25,7 +25,7 @@ import { authClient } from "@/lib/auth-client";
 const Projects = () => {
   const { projectId } = useParams();
   const navigate = useNavigate();
-  const {data:session, isPending} = authClient.useSession()
+  const { data: session, isPending } = authClient.useSession();
   const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -58,53 +58,49 @@ const Projects = () => {
     try {
       const { data } = await api.get(`/api/user/projects/${projectId}`);
 
-      setProject(data.project)
+      setProject(data.project);
       setIsGenerating(data.project.current_code ? false : true);
       setLoading(false);
-      
-    } catch (error:any) {
+    } catch (error: any) {
       toast.error(error?.response?.data?.message || error.message);
       console.log(error);
-      
     }
-
   };
 
   const saveProject = async () => {
-    if(!previewRef.current) return
-    const code = previewRef.current.getCode();
-    if(!code) return;
-    setIsSaving(true)
-    try {
-      const {data} = await api.put(`/api/project/save/:${projectId}`,{code});
-      toast.success(data.message)
-    } catch (error:any) {
-      toast.error(error?.response?.data?.message || error.message);
-      console.log(error);
-      
-    }finally{
-      setIsSaving(false)
-    }
+    if (!previewRef.current) return;
 
+    const code = previewRef.current.getCode();
+    if (!code) return;
+
+    setIsSaving(true);
+    try {
+      const { data } = await api.put(`/api/project/save/${projectId}`, {
+        code,
+      });
+      toast.success(data.message);
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || error.message);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
-
   const togglePublish = async () => {
-     try {
-      const {data} = await api.get(`/api/user/publish-toggle/:${projectId}`);
-      toast.success(data.message)
-      setProject((prev)=>prev ? ({...prev,isPublished: !prev.isPublished}) : null)
-    } catch (error:any) {
+    try {
+      const { data } = await api.get(`/api/user/publish-toggle/${projectId}`);
+      toast.success(data.message);
+      setProject((prev) =>
+        prev ? { ...prev, isPublished: !prev.isPublished } : null
+      );
+    } catch (error: any) {
       toast.error(error?.response?.data?.message || error.message);
       console.log(error);
-      
     }
-
   };
 
   const downloadCode = () => {
-    const code =
-      previewRef.current?.getCode() || project?.current_code;
+    const code = previewRef.current?.getCode() || project?.current_code;
     if (!code) return;
 
     const element = document.createElement("a");
@@ -115,18 +111,18 @@ const Projects = () => {
     element.click();
   };
 
-  useEffect(()=>{
-    if(session?.user){
+  useEffect(() => {
+    if (session?.user) {
       fetchProject();
-    }else if(!isPending && !session?.user){
-      navigate("/")
-      toast("Please login to view your project")
+    } else if (!isPending && !session?.user) {
+      navigate("/");
+      toast("Please login to view your project");
     }
-  },[session?.user])
+  }, [session?.user]);
 
   useEffect(() => {
-    if(project && !project.current_code){
-      const intervalId = setInterval(fetchProject,10000);
+    if (project && !project.current_code) {
+      const intervalId = setInterval(fetchProject, 10000);
       return () => clearInterval(intervalId);
     }
     // fetchProject();
@@ -180,25 +176,19 @@ const Projects = () => {
           <SmartphoneIcon
             onClick={() => setDevice("phone")}
             className={`size-6 p-1 rounded cursor-pointer ${
-              device === "phone"
-                ? "bg-gray-300 dark:bg-gray-700"
-                : ""
+              device === "phone" ? "bg-gray-300 dark:bg-gray-700" : ""
             }`}
           />
           <TabletIcon
             onClick={() => setDevice("tablet")}
             className={`size-6 p-1 rounded cursor-pointer ${
-              device === "tablet"
-                ? "bg-gray-300 dark:bg-gray-700"
-                : ""
+              device === "tablet" ? "bg-gray-300 dark:bg-gray-700" : ""
             }`}
           />
           <LaptopIcon
             onClick={() => setDevice("desktop")}
             className={`size-6 p-1 rounded cursor-pointer ${
-              device === "desktop"
-                ? "bg-gray-300 dark:bg-gray-700"
-                : ""
+              device === "desktop" ? "bg-gray-300 dark:bg-gray-700" : ""
             }`}
           />
         </div>
