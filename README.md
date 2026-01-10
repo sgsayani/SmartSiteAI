@@ -26,11 +26,11 @@ Responsive UI
 
 # 🛠 Tech Stack
 
-**Frontend**: React
-**Backend**: Node.js, Express.js
-**Database**: PostgreSQL (Neon DB)
-**ORM**: Prisma
-**Others**: REST APIs, Authentication, Responsive UI
+**Frontend**: React<br/>
+**Backend**: Node.js, Express.js<br/>
+**Database**: PostgreSQL (Neon DB)<br/>
+**ORM**: Prisma<br/>
+**Others**: REST APIs, Authentication, Responsive UI<br/>
 
 # 🧠 What I Learned
 - Building a full-stack product from scratch
