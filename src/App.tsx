@@ -12,6 +12,7 @@ import Navbar from "./components/Navbar";
 import { Toaster } from "sonner";
 import AuthPage from "./pages/auth/AuthPage";
 import Settings from "./pages/Settings";
+import CyberCursorGlow from "./components/CyberCursorGlow ";
 
 const App = () => {
   const [dark, setDark] = useState(false);
@@ -93,7 +94,7 @@ const App = () => {
           </label>
         </div>
       </div> */}
-
+      <CyberCursorGlow />
       <div
         className="
           min-h-screen

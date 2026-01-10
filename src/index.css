@@ -794,3 +794,22 @@ body:not(.dark) .cyber-textarea::placeholder {
 .cyber-btn {
   filter: saturate(0.95);
 }
+/* cursor glow
+ */
+
+ .cyber-cursor-glow {
+  position: fixed;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(
+    circle,
+    rgba(0, 231, 255, 0.12),
+    rgba(0, 231, 255, 0.04),
+    transparent 70%
+  );
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  filter: blur(60px);
+  z-index: 1;
+  transition: opacity 0.3s ease;
+}

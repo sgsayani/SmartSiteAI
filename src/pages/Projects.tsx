@@ -137,9 +137,9 @@ const Projects = () => {
   }
 
   return project ? (
-    <div className="flex flex-col h-screen w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
+    <div className="cyber-root flex flex-col h-screen w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
       {/* builder nav */}
-      <div className="flex max-sm:flex-col sm:items-center gap-4 px-4 py-2 border-b border-gray-200 dark:border-gray-800">
+      <div className=" cyber-glass flex max-sm:flex-col sm:items-center gap-4 px-4 py-2 border-b border-gray-200 dark:border-gray-800">
         {/* left */}
         <div className="flex items-center gap-2 sm:min-w-90 text-nowrap">
           <img
@@ -218,14 +218,14 @@ const Projects = () => {
 
           <button
             onClick={downloadCode}
-            className="bg-blue-600 hover:bg-blue-500 text-white px-3.5 py-1 flex items-center gap-2 rounded sm:rounded-sm transition-colors"
+                className="cyber-btn flex items-center gap-2 px-4 py-2 rounded-md"
           >
             <ArrowBigDownDashIcon size={16} /> Download
           </button>
 
           <button
             onClick={togglePublish}
-            className="bg-indigo-600 hover:bg-indigo-500 text-white px-3.5 py-1 flex items-center gap-2 rounded sm:rounded-sm transition-colors"
+            className="cyber-btn flex items-center gap-2 px-4 py-2 rounded-md"
           >
             {project.isPublished ? (
               <EyeOffIcon size={16} />
