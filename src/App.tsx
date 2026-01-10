@@ -16,18 +16,18 @@ import Settings from "./pages/Settings";
 const App = () => {
   const [dark, setDark] = useState(false);
 
-  useEffect(() => {
-    const saved = localStorage.getItem("theme");
-    if (saved === "dark") {
-      setDark(true);
-      document.documentElement.classList.add("dark");
-    }
-  }, []);
+  // useEffect(() => {
+  //   const saved = localStorage.getItem("theme");
+  //   if (saved === "dark") {
+  //     setDark(true);
+  //     document.documentElement.classList.add("dark");
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", dark);
-    localStorage.setItem("theme", dark ? "dark" : "light");
-  }, [dark]);
+  // useEffect(() => {
+  //   document.documentElement.classList.toggle("dark", dark);
+  //   localStorage.setItem("theme", dark ? "dark" : "light");
+  // }, [dark]);
 
   const { pathname } = useLocation();
   const hideNavbar =
@@ -39,7 +39,7 @@ const App = () => {
     <>
       {/* <CyberThemeToggle /> */}
       {/* Holographic Theme Toggle */}
-      <div className="toggle-container fixed bottom-6 right-6 z-[9999]">
+      {/* <div className="toggle-container fixed bottom-6 right-6 z-[9999]">
         <div className="toggle-wrap">
           <input
             className="toggle-input"
@@ -92,7 +92,7 @@ const App = () => {
             <div className="holo-glow"></div>
           </label>
         </div>
-      </div>
+      </div> */}
 
       <div
         className="
