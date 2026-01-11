@@ -13,6 +13,7 @@ import { Toaster } from "sonner";
 import AuthPage from "./pages/auth/AuthPage";
 import Settings from "./pages/Settings";
 import CyberCursorGlow from "./components/CyberCursorGlow ";
+import Loading from "./pages/Loading";
 
 const App = () => {
   const [dark, setDark] = useState(false);
@@ -118,6 +119,7 @@ const App = () => {
           <Route path="/view/:projectId" element={<View />} />
           <Route path="/auth/:pathname" element={<AuthPage />} />
           <Route path="/account/settings" element={<Settings />} />
+          <Route path="/loading" element={<Loading />} />
         </Routes>
       </div>
     </>
