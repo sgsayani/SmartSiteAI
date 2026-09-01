@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 // import CyberThemeToggle from "./components/CyberThemeToggle";
 import Home from "./pages/Home";
@@ -16,8 +15,6 @@ import CyberCursorGlow from "./components/CyberCursorGlow ";
 import Loading from "./pages/Loading";
 
 const App = () => {
-  const [dark, setDark] = useState(false);
-
   // useEffect(() => {
   //   const saved = localStorage.getItem("theme");
   //   if (saved === "dark") {
