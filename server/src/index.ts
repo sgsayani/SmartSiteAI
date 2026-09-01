@@ -2,13 +2,13 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { toNodeHandler } from "better-auth/node";
-import { auth, CLIENT_URL } from "./lib/auth.js";
+import { auth, CLIENT_URLS } from "./lib/auth.js";
 import userRouter from "./routes/user.js";
 import projectRouter from "./routes/project.js";
 
 const app = express();
 
-app.use(cors({ origin: CLIENT_URL, credentials: true }));
+app.use(cors({ origin: CLIENT_URLS, credentials: true }));
 
 // better-auth reads the raw request stream, so it has to be mounted before
 // express.json() consumes the body.

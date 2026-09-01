@@ -2,7 +2,15 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "./prisma.js";
 
-export const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:5173";
+/**
+ * Allowed browser origins. Comma-separate to permit more than one, e.g.
+ * CLIENT_URL="http://localhost:5173,https://smart-site-ai-seven.vercel.app"
+ * — deployment needs the production origin without losing local development.
+ */
+export const CLIENT_URLS = (process.env.CLIENT_URL || "http://localhost:5173")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
 
 export const auth = betterAuth({
   appName: "SmartSite AI",
@@ -18,7 +26,7 @@ export const auth = betterAuth({
   },
   // The client is on a different origin and sends cookies, so it has to be
   // trusted explicitly or better-auth rejects the sign-up/sign-in request.
-  trustedOrigins: [CLIENT_URL],
+  trustedOrigins: CLIENT_URLS,
   advanced: {
     defaultCookieAttributes: {
       // Cross-site cookies (Vercel frontend -> separate API host) require
